@@ -1,0 +1,129 @@
+# Set verbosity
+ifeq ($(V), 1)
+Q =
+else
+Q = @
+endif
+
+#complier
+GCC = arm-none-eabi-
+
+#Targets
+TARGET = template
+
+#Commands
+CC = $(Q)$(GCC)gcc
+AS = $(Q)$(GCC)as
+LD = $(Q)$(GCC)ld
+AR = $(Q)$(GCC)ar
+CPP = $(Q)$(GCC)cpp
+OBJCOPY = $(Q)$(GCC)objcopy
+OBJDUMP = $(Q)$(GCC)objdump
+SIZE = $(Q)$(GCC)size
+
+MKDIR = $(Q)mkdir
+ECHO = $(Q)echo
+MAKE = $(Q)make
+CAT = $(Q)cat
+RM = $(Q)rm
+
+
+TOP_DIR = $(shell pwd)
+CMSIS = $(TOP_DIR)/arch/$(CPU_DIR)/cmsis
+HAL_LIB = $(TOP_DIR)/arch/$(CPU_DIR)/hal_lib
+USER = user
+
+include Makefile.config
+vpath %.S $(CMSIS)/user
+vpath %.c $(CMSIS)/src/st $(HAL_LIB)/src $(TOP_DIR)/user
+vpath %.h $(TOP_DIR)/user $(CMSIS)/inc $(CMSIS)/inc/st 
+
+DEFS += -DUSE_HAL_DRIVER 
+DEFS += -D$(MCU)
+
+INCS += -I$(CMSIS)/inc
+INCS += -I$(CMSIS)/inc/st
+INCS += -I$(HAL_LIB)/inc
+INCS += -I$(USER)
+
+OBJS += $(CMSIS)/src/st/system_stm32f7xx.o
+OBJS += $(USER)/startup_stm32f769xx.o
+OBJS += $(USER)/main.o
+OBJS += $(USER)/stm32f7xx_hal_msp.o
+OBJS += $(USER)/stm32f7xx_it.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_adc.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_adc_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dac.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dac_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_cortex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dcmi.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dma.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dma_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_dma2d.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_flash.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_flash_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_gpio.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_hcd.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_i2c.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_i2c_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_pcd.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_pcd_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_pwr.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_pwr_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_rcc.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_rcc_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_rng.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_rtc.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_rtc_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_sd.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_sdram.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_spi.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_can.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_tim.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_tim_ex.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_uart.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_usart.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_hal_jpeg.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_ll_usb.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_ll_sdmmc.o
+OBJS += $(HAL_LIB)/src/stm32f7xx_ll_fmc.o
+
+
+
+ARCH_FLAGS=-mthumb -mcpu=cortex-m7 
+ 
+CFLAGS=-ggdb -O2 -std=c99 -Wall -Wextra -Warray-bounds -Wno-unused-parameter $(ARCH_FLAGS) $(INC) -DSTM32F769xx -DUSE_HAL_DRIVER
+LDFLAGS=-Wl,--gc-sections -lm
+#CFLAGS += -std=gnu99 -Warray-bounds -mthumb -nostartfiles -fdata-sections -ffunction-sections
+#CFLAGS += -D$(MCU) -D$(CFLAGS_MCU) -fsingle-precision-constant -Wdouble-promotion -mcpu=$(CPU) -mtune=$(CPU) 
+#CFLAGS += -mfpu=$(FPU)
+#CFLAGS += -mcpu=$(CPU) -mthumb -Wall
+         
+
+
+#LDFALGS += -mcpu=$(CPU) -mthumb -nostdlib 
+
+
+LINKSCRIPT=user/stm32fxxx.ld
+
+all:$(TARGET).bin
+
+$(TARGET).bin:$(TARGET).elf
+	$(OBJCOPY) -O binary -S $< $@
+
+$(TARGET).elf:$(OBJS) $(LINKSCRIPT)
+	#$(CC) $(LDFLAGS) $^ -Tuser/stm32fxxx.ld -o $@
+	$(LD) $(ARCH_FLAGS) -T $(LINKSCRIPT) -o $@ $(OBJS) $(LDFLAGS)
+	$(SIZE) $@
+
+%.o:%.S
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o:%.c
+	$(CC) $(CFLAGS) $(DEFS) $(INCS) -c $< -o $@
+	
+.PHONY:clean
+clean:
+	$(RM) -f $(OBJS) $(TARGET).elf $(TARGET).bin
