@@ -25,9 +25,9 @@ MAKE    = $(Q)make
 CAT     = $(Q)cat
 FLASH  	= $(Q)st-flash
 
-vpath %.S user
-vpath %.c user component arch arch/$(CPU_DIR)/bsp/ arch/$(CPU_DIR)/hal_lib/src arch/$(CPU_DIR)/cmsis/src/st
-vpath %.h user component arch arch/$(CPU_DIR)/bsp/ arch/$(CPU_DIR)/hal_lib/inc/ arch/$(CPU_DIR)/cmsis/inc/ arch/$(CPU_DIR)/cmsis/inc/st/
+#vpath %.S 
+#vpath %.c component arch arch/$(CPU_DIR)/bsp/ arch/$(CPU_DIR)/hal_lib/src arch/$(CPU_DIR)/cmsis/src/st
+#vpath %.h component arch arch/$(CPU_DIR)/bsp/ arch/$(CPU_DIR)/hal_lib/inc/ arch/$(CPU_DIR)/cmsis/inc/ arch/$(CPU_DIR)/cmsis/inc/st/
 
 include Makefile.config
 
@@ -35,30 +35,18 @@ DEFS += -DUSE_HAL_DRIVER
 DEFS += -D$(MCU)
 DEFS += -D__FPU_PRESENT=1 -D__VFP_FP__ 
 
-INCS += -Iuser -Icomponent -Iarch -Iarch/$(CPU_DIR)/bsp -Iarch/$(CPU_DIR)/hal_lib/inc -Iarch/$(CPU_DIR)/cmsis/inc -Iarch/$(CPU_DIR)/cmsis/inc/st
+INCS += -Icomponent -Iarch 
 
-OBJS += user/startup_stm32f769xx.o
-OBJS += user/main.o user/stm32f7xx_hal_msp.o
-OBJS += user/stm32f7xx_it.o
+include user/Makefile.config
+include arch/$(CPU_DIR)/Makefile.config
 
-OBJS += arch/$(CPU_DIR)/cmsis/src/st/system_stm32f7xx.o
-OBJS += arch/$(CPU_DIR)/cmsis/src/st/system_stm32f7xx.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_rcc.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_rcc_ex.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_pwr.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_pwr_ex.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_gpio.o
-OBJS += arch/$(CPU_DIR)/hal_lib/src/stm32f7xx_hal_cortex.o
 
-OBJS += component/drv_led.o
-OBJS += arch/$(CPU_DIR)/bsp/gpio.o
-OBJS += arch/$(CPU_DIR)/bsp/usart.o
 OBJS += arch/ifs.o
+OBJS += component/drv_led.o
 
 CFLAGS += -g -O3 -std=gnu99 -Warray-bounds -nostartfiles -fdata-sections -ffunction-sections 
-CFLAGS += -mcpu=$(CPU) -mthumb -Wall -mfpu=$(FPU) 
-LFLAGS += -specs=nosys.specs -mcpu=$(CPU) -mthumb 
+CFLAGS += -mcpu=$(CPU) -fsingle-precision-constant -Wdouble-promotion -mtune=$(CPU) -mthumb -Wall -mfpu=$(FPU) -mfloat-abi=hard 
+LFLAGS += -specs=nosys.specs -mcpu=$(CPU) -mthumb -Wl,--gc-sections -mfpu=$(FPU) -mfloat-abi=hard 
 
 .PHONY:all clean
 all:$(TARGET).bin
@@ -74,7 +62,7 @@ $(TARGET).bin:$(TARGET).elf
 	$(OBJCOPY) -O binary -S $< $@
 
 $(TARGET).elf:$(OBJS)
-	$(CC) $(LFLAGS) $^ -Tuser/stm32fxxx.ld -o $@
+	$(CC) $(LFLAGS) $^ -Wl,-Tuser/stm32fxxx.ld -o $@
 	$(SIZE) $@
 
 %.o:%.s
