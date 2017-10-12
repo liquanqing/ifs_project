@@ -16,6 +16,7 @@ SIZE    = $(Q)arm-none-eabi-size
 STRIP   = $(Q)arm-none-eabi-strip -s
 OBJCOPY = $(Q)arm-none-eabi-objcopy
 OBJDUMP = $(Q)arm-none-eabi-objdump
+GDB 	= $(Q)arm-none-eabi-gdb
 PYTHON  = $(Q)python
 MKDFU   = micropython/tools/dfu.py
 PYDFU   = $(Q)../usr/pydfu.py
@@ -54,6 +55,9 @@ all:$(TARGET).bin
 
 clean:
 	$(RM) -f $(OBJS) $(TARGET).bin $(TARGET).elf
+
+debug:$(TARGET).elf
+	$(GDB) $<
 
 flash:$(TARGET).bin
 	$(FLASH) write $< 0x08000000

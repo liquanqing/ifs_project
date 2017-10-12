@@ -84,6 +84,7 @@ ifs_err_t usart_deinit(uint8_t idx)
     uint8_t id;
     USART_TypeDef *usart = IFS_NULL;
     IFS_ASSERT((idx <= USART_PORT_NUM) || (i > 0));
+    if (0 == idx) idx = 1;
     id = idx - 1;
     usart = (USART_TypeDef *)usart_group[id];
     
@@ -125,7 +126,7 @@ ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode)
     USART_TypeDef *usart = IFS_NULL;
     
     IFS_ASSERT((idx <= USART_PORT_NUM) || (i > 0));
-    id = idx - 1;
+    id = idx;
     usart = (USART_TypeDef *)usart_group[id];
     
     if ((USART1 == usart) || (USART6 == usart)) {
@@ -200,7 +201,7 @@ ifs_err_t usart_put(uint8_t idx, uint16_t data)
     USART_TypeDef *usart = IFS_NULL;
     
     IFS_ASSERT((idx <= USART_PORT_NUM) || (idx > 0));
-    usart = (USART_TypeDef *)usart_group[idx - 1];
+    usart = (USART_TypeDef *)usart_group[idx];
     
     usart->TDR = data;
     return IFS_NO_ERR;
@@ -211,7 +212,7 @@ uint16_t  usart_get(uint8_t idx)
     USART_TypeDef *usart = IFS_NULL;
     
     IFS_ASSERT((idx <= USART_PORT_NUM) || (idx > 0));
-    usart = (USART_TypeDef *)usart_group[idx - 1];
+    usart = (USART_TypeDef *)usart_group[idx];
     
     return usart->RDR;
 }
@@ -221,7 +222,7 @@ ifs_err_t usart_tx_ready(uint8_t idx)
     USART_TypeDef *usart = IFS_NULL;
     
     IFS_ASSERT((idx <= USART_PORT_NUM) || (idx > 0));
-    usart = (USART_TypeDef *)usart_group[idx - 1];
+    usart = (USART_TypeDef *)usart_group[idx];
     
     if (usart->ISR & (1 << 7)) {
         return IFS_READY;
@@ -235,7 +236,7 @@ ifs_err_t usart_rx_ready(uint8_t idx)
     USART_TypeDef *usart = IFS_NULL;
     
     IFS_ASSERT((idx <= USART_PORT_NUM) || (idx > 0));
-    usart = (USART_TypeDef *)usart_group[idx - 1];
+    usart = (USART_TypeDef *)usart_group[idx];
     
     if (usart->ISR & (1 << 5)) {
         return IFS_READY;

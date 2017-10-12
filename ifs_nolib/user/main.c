@@ -97,10 +97,15 @@ int main(void)
 
     //led_init();
     hw_led_init();
+    ifs.usart.init(IFS_USART1);
+    ifs.usart.config(IFS_USART1, 115200, IFS_USART_DATA_LENGTH_8 
+                                        | IFS_USART_STOPBIT_1 
+                                        | IFS_USART_PARITY_NONE);
   /* Infinite loop */
   while (1)
   {
       HAL_Delay(1000);
+      ifs.usart.put(IFS_USART1, 'c');
       led_toggle(LED_USER1);
       led_toggle(LED_USER2);
       //ifs.gpio.toggle(PORTJ, 5);
