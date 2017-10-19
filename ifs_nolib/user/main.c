@@ -37,10 +37,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "drv_cfg.h"
 #include "ifs_lib.h"
-#include "drv_led.h"
 #include "list.h"
-
 /** @addtogroup STM32F7xx_HAL_Examples
   * @{
   */
@@ -58,7 +57,6 @@ static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
-void led_init(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -69,67 +67,47 @@ void led_init(void);
   */
 int main(void)
 {
-  /* This project template calls firstly two functions in order to configure MPU feature 
+    /* This project template calls firstly two functions in order to configure MPU feature 
      and to enable the CPU Cache, respectively MPU_Config() and CPU_CACHE_Enable().
      These functions are provided as template implementation that User may integrate 
      in his application, to enhance the performance in case of use of AXI interface 
      with several masters. */ 
-  
-  /* Configure the MPU attributes as Write Through */
-  MPU_Config();
 
-  /* Enable the CPU Cache */
-  CPU_CACHE_Enable();
+    /* Configure the MPU attributes as Write Through */
+    MPU_Config();
 
-  /* STM32F7xx HAL library initialization:
+    /* Enable the CPU Cache */
+    CPU_CACHE_Enable();
+
+    /* STM32F7xx HAL library initialization:
        - Configure the Flash ART accelerator on ITCM interface
        - Configure the Systick to generate an interrupt each 1 msec
        - Set NVIC Group Priority to 4
        - Low Level Initialization
      */
-  HAL_Init();
+    HAL_Init();
 
-  /* Configure the system clock to 216 MHz */
-  SystemClock_Config();
-
-
-  /* Add your application code here */
+    /* Configure the system clock to 216 MHz */
+    SystemClock_Config();
 
 
-    //led_init();
-    hw_led_init();
+    /* Add your application code here */
+    inc_hw_led_init();
+    ifs.gpio.init(IFS_GPIOA);
+    ifs.gpio.config_pin(IFS_GPIOA, 9, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
+    ifs.gpio.config_pin(IFS_GPIOA, 10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);                
     ifs.usart.init(IFS_USART1);
-    ifs.usart.config(IFS_USART1, 115200, IFS_USART_DATA_LENGTH_8 
-                                        | IFS_USART_STOPBIT_1 
-                                        | IFS_USART_PARITY_NONE);
-  /* Infinite loop */
-  while (1)
-  {
-      HAL_Delay(1000);
-      ifs.usart.put(IFS_USART1, 'c');
-      led_toggle(LED_USER1);
-      led_toggle(LED_USER2);
-      //ifs.gpio.toggle(PORTJ, 5);
-  }
-}
-
-
-void led_init(void)
-{
-    ifs.gpio.init(IFS_GPIOJ);
-    ifs.gpio.config_pin(IFS_GPIOJ, 5, IFS_GPIO_OUT_PP); 
-    #if 0
-    GPIO_InitTypeDef gpio;
-    __HAL_RCC_GPIOJ_CLK_ENABLE();
-
-    gpio.Pin = GPIO_PIN_5;
-    gpio.Mode = GPIO_MODE_OUTPUT_PP;
-    gpio.Pull = GPIO_PULLUP;
-    gpio.Speed = GPIO_SPEED_HIGH;
-    HAL_GPIO_Init(GPIOJ, &gpio);
-
-    HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_5, GPIO_PIN_SET);
-    #endif
+    ifs.usart.config(IFS_USART1, 115200, IFS_USART_8N1);
+    /* Infinite loop */
+    while (1)
+    {
+        if (IFS_READY == ifs.usart.rx_ready(IFS_USART1)) {
+            
+            ifs.usart.put(IFS_USART1, ifs.usart.get(IFS_USART1));
+            inc_led_toggle(LED_USER1);
+            inc_led_toggle(LED_USER2);
+        }
+    }
 }
 
 /**
