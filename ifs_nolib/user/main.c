@@ -38,6 +38,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "drv_cfg.h"
+#include "drv_led.h"
 #include "ifs_lib.h"
 #include "list.h"
 /** @addtogroup STM32F7xx_HAL_Examples
@@ -92,7 +93,7 @@ int main(void)
 
 
     /* Add your application code here */
-    inc_hw_led_init();
+    hw_led_init();
     ifs.gpio.init(IFS_GPIOA);
     ifs.gpio.config_pin(IFS_GPIOA, 9, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
     ifs.gpio.config_pin(IFS_GPIOA, 10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);                
@@ -104,8 +105,8 @@ int main(void)
         if (IFS_READY == ifs.usart.rx_ready(IFS_USART1)) {
             
             ifs.usart.put(IFS_USART1, ifs.usart.get(IFS_USART1));
-            inc_led_toggle(LED_USER1);
-            inc_led_toggle(LED_USER2);
+            led_toggle(LED_USER1);
+            led_toggle(LED_USER2);
         }
     }
 }
