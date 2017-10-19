@@ -16,11 +16,11 @@
 #include "ifs.h"
 
 #if INC_USING_IFS_GPIO
-#include "./stm32f7/bsp/gpio.h"
+#include "./cpu/stm32f7/gpio.h"
 #endif
 
 #if INC_USING_IFS_USART
-#include "./stm32f7/bsp/usart.h"
+#include "./cpu/stm32f7/usart.h"
 #endif
 
 #if INC_USING_IFS

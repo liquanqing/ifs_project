@@ -46,19 +46,19 @@
  * !param None
  * !retval None
  */
-void hw_led_init(void)
+void inc_hw_led_init(void)
 {
 #ifdef INC_USE_DRV_LED_USER1
     ifs.gpio.init(LED_USER1_PORT);
     ifs.gpio.config_pin(LED_USER1_PORT, 
                         LED_USER1_PIN, 
-                        IFS_GPIO_MODE_OUTPUT | IFS_GPIO_SPEED_HIGH | IFS_GPIO_OTYPE_PP | IFS_GPIO_PUPD_NOPUPD);
+                        IFS_GPIO_OUT_PP);
 #endif
 #ifdef INC_USE_DRV_LED_USER2
     ifs.gpio.init(LED_USER2_PORT);
     ifs.gpio.config_pin(LED_USER2_PORT, 
                         LED_USER2_PIN, 
-                        IFS_GPIO_MODE_OUTPUT | IFS_GPIO_SPEED_HIGH | IFS_GPIO_OTYPE_PP | IFS_GPIO_PUPD_NOPUPD);
+                        IFS_GPIO_OUT_PP);
 #endif
 }
 
@@ -67,7 +67,7 @@ void hw_led_init(void)
  * !param LED ID
  * !retval None
  */
-void led_set(uint32_t led_user)
+void inc_led_set(uint32_t led_user)
 {
 #ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {
@@ -90,7 +90,7 @@ void led_set(uint32_t led_user)
  * !param LED ID
  * !retval None
  */
-void led_reset(uint32_t led_user)
+void inc_led_reset(uint32_t led_user)
 {
 #ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {
@@ -114,7 +114,7 @@ void led_reset(uint32_t led_user)
  * !param LED ID
  * !retval None
  */
-void led_toggle(uint32_t led_user)
+void inc_led_toggle(uint32_t led_user)
 {
 #ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {

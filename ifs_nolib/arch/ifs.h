@@ -31,7 +31,6 @@ struct _ifs_gpio_t {
 };
 typedef struct _ifs_gpio_t ifs_gpio_t;
 
-#endif
 
 #if INC_USING_IFS_USART
 struct _ifs_usart_t {
@@ -45,18 +44,29 @@ struct _ifs_usart_t {
 };
 typedef struct _ifs_usart_t ifs_usart_t;
 #endif
+#endif
+
 
 #if INC_USING_IFS
 struct _ifs_info_t {
 #if INC_USING_IFS_GPIO
     ifs_gpio_t gpio;
-#endif
 #if INC_USING_IFS_USART
     ifs_usart_t usart;
+#endif
 #endif
 };
 typedef struct _ifs_info_t ifs_info_t;
 #endif
+
+/* Bit Control */
+#define IFS_SET_BIT(REG, BIT)     ((REG) |= (1ul << BIT))
+#define IFS_CLEAR_BIT(REG, BIT)   ((REG) &= ~(1ul << BIT))
+#define IFS_READ_BIT(REG, BIT)    ((REG) & (1ul << BIT))
+#define IFS_CLEAR_REG(REG)        ((REG) = (0x0))
+#define IFS_WRITE_REG(REG, VAL)   ((REG) = (VAL))
+#define IFS_READ_REG(REG)         ((REG))
+#define IFS_MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 
 
 /* Exported macro ------------------------------------------------------------*/

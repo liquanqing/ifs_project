@@ -27,7 +27,6 @@ const ifs_info_t ifs = {
         .in         = gpio_in,
         .get        = gpio_get,
     },
-#endif
 #if INC_USING_IFS_USART
     {
         .init       = usart_init,    
@@ -38,6 +37,7 @@ const ifs_info_t ifs = {
         .tx_ready   = usart_rx_ready,
         .rx_ready   = usart_rx_ready,
     },
+#endif
 #endif
 };
 #endif

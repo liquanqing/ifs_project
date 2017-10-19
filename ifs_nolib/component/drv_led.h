@@ -28,10 +28,10 @@
 /*
  * !brief export function                                  
  */
-void hw_led_init(void);
-void led_set(uint32_t led_user);
-void led_reset(uint32_t led_user);
-void led_toggle(uint32_t led_user);
+void inc_hw_led_init(void);
+void inc_led_set(uint32_t led_user);
+void inc_led_reset(uint32_t led_user);
+void inc_led_toggle(uint32_t led_user);
 
 
 #endif
