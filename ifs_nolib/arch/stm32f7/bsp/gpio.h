@@ -14,17 +14,17 @@
 #define __GPIO_H
 
 enum _GPIO {
-    PORTA = 0,
-    PORTB = 1,
-    PORTC = 2,
-    PORTD = 3,
-    PORTE = 4,
-    PORTF = 5,
-    PORTG = 6,
-    PORTH = 7,
-    PORTI = 8,
-    PORTJ = 9,
-    PORTK = 10,
+    IFS_GPIOA = 0,
+    IFS_GPIOB = 1,
+    IFS_GPIOC = 2,
+    IFS_GPIOD = 3,
+    IFS_GPIOE = 4,
+    IFS_GPIOF = 5,
+    IFS_GPIOG = 6,
+    IFS_GPIOH = 7,
+    IFS_GPIOI = 8,
+    IFS_GPIOJ = 9,
+    IFS_GPIOK = 10,
 };
 
 #define IFS_GPIO_MODE_INPUT             (0x00000000 << 0)
@@ -61,7 +61,30 @@ enum _GPIO {
 #define IFS_GPIO_AF_AF14                (0x0000000E << 7)
 #define IFS_GPIO_AF_AF15                (0x0000000F << 7)
 
+#define IFS_GPIO_OUT_PP                 (IFS_GPIO_MODE_OUTPUT  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_OTYPE_PP   \
+                                         | IFS_GPIO_PUPD_NOPUPD)
+#define IFS_GPIO_OUT_OD                 (IFS_GPIO_MODE_OUTPUT  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_OTYPE_OD   \
+                                         | IFS_GPIO_PUPD_NOPUPD)
+                                         
+#define IFS_GPIO_IN_UP                  (IFS_GPIO_MODE_INPUT  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_PUPD_UP)
+#define IFS_GPIO_IN_DOWN                (IFS_GPIO_MODE_INPUT  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_PUPD_DOWN)
+#define IFS_GPIO_IN_NOPUPD              (IFS_GPIO_MODE_INPUT  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_PUPD_NOPUPD)
+#define IFS_GPIO_ANALOG                 (IFS_GPIO_MODE_ANALOG)   
 
+#define IFS_GPIO_ALTERNATE              (IFS_GPIO_MODE_ALTERNATE  \
+                                         | IFS_GPIO_SPEED_HIGH \
+                                         | IFS_GPIO_OTYPE_PP   \
+                                         | IFS_GPIO_PUPD_NOPUPD)
 
 ifs_err_t gpio_init(uint8_t idx);
 ifs_err_t gpio_deinit(uint8_t idx);

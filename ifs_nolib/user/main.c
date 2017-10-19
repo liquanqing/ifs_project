@@ -39,6 +39,7 @@
 #include "main.h"
 #include "ifs_lib.h"
 #include "drv_led.h"
+#include "list.h"
 
 /** @addtogroup STM32F7xx_HAL_Examples
   * @{
@@ -115,10 +116,8 @@ int main(void)
 
 void led_init(void)
 {
-    ifs.gpio.init(PORTJ);
-    ifs.gpio.config_pin(PORTJ, 
-                        5, 
-                        IFS_GPIO_MODE_OUTPUT | IFS_GPIO_SPEED_HIGH | IFS_GPIO_OTYPE_PP | IFS_GPIO_PUPD_NOPUPD); 
+    ifs.gpio.init(IFS_GPIOJ);
+    ifs.gpio.config_pin(IFS_GPIOJ, 5, IFS_GPIO_OUT_PP); 
     #if 0
     GPIO_InitTypeDef gpio;
     __HAL_RCC_GPIOJ_CLK_ENABLE();

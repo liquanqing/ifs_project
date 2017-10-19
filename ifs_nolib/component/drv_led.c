@@ -31,13 +31,13 @@
  */
 #ifdef INC_USE_DRV_LED_USER1
 #define RCC_LED_USER1_EN()  do{__HAL_RCC_GPIOJ_CLK_ENABLE();}while(0)
-#define LED_USER1_PORT  PORTJ
+#define LED_USER1_PORT  IFS_GPIOJ
 #define LED_USER1_PIN   5
 #endif
 
 #ifdef INC_USE_DRV_LED_USER2
 #define RCC_LED_USER2_EN()  do{__HAL_RCC_GPIOJ_CLK_ENABLE();}while(0)
-#define LED_USER2_PORT  PORTJ
+#define LED_USER2_PORT  IFS_GPIOJ
 #define LED_USER2_PIN   13
 #endif
 

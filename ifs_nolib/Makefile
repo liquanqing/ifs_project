@@ -37,6 +37,7 @@ DEFS += -D$(MCU)
 DEFS += -D__FPU_PRESENT=1 -D__VFP_FP__ 
 
 INCS += -Icomponent -Iarch 
+INCS += -Icommon
 
 include user/Makefile.config
 include arch/$(CPU_DIR)/Makefile.config
