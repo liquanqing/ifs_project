@@ -189,9 +189,9 @@ ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode)
 //    }
     usart->CR1 |= 1 << 3; // enable txd
     usart->CR1 |= 1 << 2; // enable rxd
-    usart->CR1 |= 1 << 5; // interrupt with recieve buff not empty
-    NVIC_EnableIRQ(usart_irq[id]);
-    NVIC_SetPriority(usart_irq[id], 1);
+    //usart->CR1 |= 1 << 5; // interrupt with recieve buff not empty
+    //NVIC_EnableIRQ(usart_irq[id]);
+    //NVIC_SetPriority(usart_irq[id], 1);
     usart->CR1 |= 1 << 0; // enable usart
     return IFS_NO_ERR;
 }
@@ -281,4 +281,3 @@ void UART8_IRQHandler(void)
 
 #endif
 /******************************End Of File(INC)*********************************/
-

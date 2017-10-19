@@ -34,6 +34,10 @@
 #define IFS_USART_DATA_LENGTH_9         (1 << 0)
 #define IFS_USART_DATA_LENGTH_7         (2 << 0)
 
+#define IFS_USART_8N1                   (IFS_USART_DATA_LENGTH_8 \
+                                        | IFS_USART_STOPBIT_1    \
+                                        | IFS_USART_PARITY_NONE)
+
 ifs_err_t usart_init(uint8_t idx);
 ifs_err_t usart_deinit(uint8_t idx);
 ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode);

@@ -63,72 +63,69 @@ ifs_err_t gpio_config_pin(uint8_t idx, uint8_t pin_idx, uint32_t mode)
     gpio->OTYPER  = (gpio->OTYPER  & ~(((uint32_t)0x01) << (pin_idx))) | (tmpotype << pin_idx);
     gpio->PUPDR   = (gpio->PUPDR   & ~(((uint32_t)0x03) << (pin_idx << 1))) | (tmppupd << (pin_idx << 1));
     if (2 == tmpmode) {
-        if (pin_idx > 7) {
-            gpio->AFR[1] = tmpafio << (pin_idx - 8);
-        } else {
-            gpio->AFR[0] = tmpafio << (pin_idx);
-        }
+        gpio->AFR[pin_idx >> 3] &= ~(0x0F << ((pin_idx & 0x07) << 2));
+        gpio->AFR[pin_idx >> 3] |= (tmpafio << ((pin_idx & 0x07) << 2));
     }
     return IFS_NO_ERR;
 }
 
 ifs_err_t gpio_set(uint8_t idx, uint32_t pin_idx)
 {
-    GPIO_TypeDef *gpio;
+    //GPIO_TypeDef *gpio;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    gpio->BSRR |= (1 << pin_idx);
-    
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    //gpio->BSRR |= (1 << pin_idx);
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= (1 << pin_idx);
     return IFS_NO_ERR;
 }
 
 ifs_err_t gpio_clear(uint8_t idx, uint32_t pin_idx)
 {
-    GPIO_TypeDef *gpio;
-    uint32_t tmppin = pin_idx + 16;
+    //GPIO_TypeDef *gpio;
+    //uint32_t tmppin = pin_idx + 16;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    gpio->BSRR |= (1 << tmppin);
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= (1 << (pin_idx + 16));
     
     return IFS_NO_ERR;
 }
 
 ifs_err_t gpio_toggle(uint8_t idx, uint32_t pin_idx)
 {
-    GPIO_TypeDef *gpio;
+    //GPIO_TypeDef *gpio;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    gpio->ODR ^= (1 << pin_idx);
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->ODR ^= (1 << pin_idx);
     
     return IFS_NO_ERR;
 }
 
 ifs_err_t gpio_out(uint8_t idx, uint32_t pin_mask, uint32_t value)
 {
-    GPIO_TypeDef *gpio;
+    //GPIO_TypeDef *gpio;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    gpio->ODR = value;
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->ODR = value;
     
     return IFS_NO_ERR;
 }
 
 ifs_err_t gpio_in(uint8_t idx, uint32_t pin_mask, uint32_t *value)
 {
-    GPIO_TypeDef *gpio;
+    //GPIO_TypeDef *gpio;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    *value = gpio->IDR;
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    *value = ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR;
     
     return IFS_NO_ERR;
 }
 
 uint32_t gpio_get(uint8_t idx, uint32_t pin_mask)
 {
-    GPIO_TypeDef *gpio;
+    //GPIO_TypeDef *gpio;
     
-    gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    return gpio->IDR;
+    //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
+    return ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR;
 }
 
 
