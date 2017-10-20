@@ -36,10 +36,9 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-#include "drv_cfg.h"
-#include "drv_led.h"
 #include "ifs_lib.h"
+#include "main.h"
+#include "drv_led.h"
 #include "list.h"
 /** @addtogroup STM32F7xx_HAL_Examples
   * @{
@@ -54,10 +53,10 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void SystemClock_Config(void);
+//static void SystemClock_Config(void);
 static void Error_Handler(void);
-static void MPU_Config(void);
-static void CPU_CACHE_Enable(void);
+//static void MPU_Config(void);
+//static void CPU_CACHE_Enable(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -75,21 +74,23 @@ int main(void)
      with several masters. */ 
 
     /* Configure the MPU attributes as Write Through */
-    MPU_Config();
+    //MPU_Config();
 
     /* Enable the CPU Cache */
-    CPU_CACHE_Enable();
-
+    //CPU_CACHE_Enable();
+    cache_enable();
+    nvic_group_config(NVIC_PRIORITYGROUP_4);
     /* STM32F7xx HAL library initialization:
        - Configure the Flash ART accelerator on ITCM interface
        - Configure the Systick to generate an interrupt each 1 msec
        - Set NVIC Group Priority to 4
        - Low Level Initialization
      */
-    HAL_Init();
+    //HAL_Init();
 
     /* Configure the system clock to 216 MHz */
-    SystemClock_Config();
+    //SystemClock_Config();
+    sys_clock_config();
 
 
     /* Add your application code here */
@@ -132,6 +133,7 @@ int main(void)
   * @param  None
   * @retval None
   */
+  #if 0
 static void SystemClock_Config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
@@ -183,6 +185,7 @@ static void SystemClock_Config(void)
     Error_Handler();
   }
 }
+#endif
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -205,6 +208,7 @@ static void Error_Handler(void)
   * @param  None
   * @retval None
   */
+#if 0
 static void MPU_Config(void)
 {
   MPU_Region_InitTypeDef MPU_InitStruct;
@@ -230,6 +234,7 @@ static void MPU_Config(void)
   /* Enable the MPU */
   HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }
+#endif
 
 /**
   * @brief  CPU L1-Cache enable.

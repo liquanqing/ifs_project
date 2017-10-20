@@ -15,11 +15,8 @@
  * !brief include header
  */
 
-#include "drv_cfg.h"
 #include "ifs_lib.h"
-
-#ifdef INC_USE_DRV_LED
-
+#include "drv_led.h"
 
 
 #ifndef NULL
@@ -29,17 +26,11 @@
 /*
  * !brief user define
  */
-#ifdef INC_USE_DRV_LED_USER1
-#define RCC_LED_USER1_EN()  do{__HAL_RCC_GPIOJ_CLK_ENABLE();}while(0)
 #define LED_USER1_PORT  IFS_GPIOJ
 #define LED_USER1_PIN   5
-#endif
 
-#ifdef INC_USE_DRV_LED_USER2
-#define RCC_LED_USER2_EN()  do{__HAL_RCC_GPIOJ_CLK_ENABLE();}while(0)
 #define LED_USER2_PORT  IFS_GPIOJ
 #define LED_USER2_PIN   13
-#endif
 
 /*
  * !brief All LED Init
@@ -48,18 +39,14 @@
  */
 void hw_led_init(void)
 {
-#ifdef INC_USE_DRV_LED_USER1
     ifs.gpio.init(LED_USER1_PORT);
     ifs.gpio.config_pin(LED_USER1_PORT, 
                         LED_USER1_PIN, 
                         IFS_GPIO_OUT_PP);
-#endif
-#ifdef INC_USE_DRV_LED_USER2
     ifs.gpio.init(LED_USER2_PORT);
     ifs.gpio.config_pin(LED_USER2_PORT, 
                         LED_USER2_PIN, 
                         IFS_GPIO_OUT_PP);
-#endif
 }
 
 /*
@@ -69,20 +56,12 @@ void hw_led_init(void)
  */
 void led_set(uint32_t led_user)
 {
-#ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.set(LED_USER1_PORT, LED_USER1_PIN);
-#endif
     }
-#endif
-#ifdef INC_USE_DRV_LED_USER2
     if (led_user & LED_USER2) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.set(LED_USER2_PORT, LED_USER2_PIN);
-#endif
     }
-#endif
 }
                                           
 /*
@@ -92,20 +71,12 @@ void led_set(uint32_t led_user)
  */
 void led_reset(uint32_t led_user)
 {
-#ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.clear(LED_USER1_PORT, LED_USER1_PIN);
-#endif
     }
-#endif
-#ifdef INC_USE_DRV_LED_USER2
     if (led_user & LED_USER2) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.clear(LED_USER2_PORT, LED_USER2_PIN);
-#endif
     }
-#endif
 }
 
 
@@ -116,23 +87,14 @@ void led_reset(uint32_t led_user)
  */
 void led_toggle(uint32_t led_user)
 {
-#ifdef INC_USE_DRV_LED_USER1
     if (led_user & LED_USER1) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.toggle(LED_USER1_PORT, LED_USER1_PIN);
-#endif
     }
-#endif
-#ifdef INC_USE_DRV_LED_USER2
     if (led_user & LED_USER2) {
-#if defined(USE_HAL_DRIVER)
         ifs.gpio.toggle(LED_USER2_PORT, LED_USER2_PIN);
-#endif
     }
-#endif
 }
 
-#endif /* ifdef INC_USE_DRV_LED */
 
 /******************************End Of File(INC)***********************************/
 

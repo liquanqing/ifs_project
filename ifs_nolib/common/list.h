@@ -8,6 +8,10 @@
 #ifndef _LIST_H
 #define _LIST_H
 
+#ifndef NULL
+#define NULL (void*)0
+#endif
+
 struct slist_t {
     struct slist_t *next;
 };
@@ -43,21 +47,22 @@ static inline void slist_append(struct slist_t *head, struct slist_t *new)
 
 static inline int slist_del(struct slist_t **head, struct slist_t *node)
 {
-    if (slist_empty(*head)) {
+    struct slist_t *next = *head;
+    if (slist_empty(next)) {
         return -1;
     }
 
-    if (*head == node) {
+    if (next == node) {
         *head = node->next;
         return 0;
     }
 
-    while ((*head)->next != *head) {
-        if ((*head)->next == node) {
-            (*head)->next = node->next;
+    while (next->next != next) {
+        if (next->next == node) {
+            next->next = node->next;
             return 0;
         }
-        *head = (*head)->next;
+        next = next->next;
     }
 
     return -1;

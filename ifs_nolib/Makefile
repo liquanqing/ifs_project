@@ -32,7 +32,7 @@ FLASH  	= $(Q)st-flash
 
 include Makefile.config
 
-DEFS += -DUSE_HAL_DRIVER
+#DEFS += -DUSE_HAL_DRIVER
 DEFS += -D$(MCU)
 DEFS += -D__FPU_PRESENT=1 -D__VFP_FP__ 
 

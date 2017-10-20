@@ -13,14 +13,21 @@
 #ifndef __INC_LIB_H
 #define __INC_LIB_H
 
+#define STM32F769
+
 #include "ifs.h"
+#ifdef STM32F769
+#include "stm32f7xx.h"
+#include "./stm32f7/bsp/sys.h"
 
 #if INC_USING_IFS_GPIO
-#include "./stm32f7/bsp//gpio.h"
+#include "./stm32f7/bsp/gpio.h"
 #endif
 
 #if INC_USING_IFS_USART
 #include "./stm32f7/bsp/usart.h"
+#endif
+
 #endif
 
 #if INC_USING_IFS

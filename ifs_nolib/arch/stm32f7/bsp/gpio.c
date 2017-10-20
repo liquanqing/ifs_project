@@ -10,7 +10,7 @@
   *
   ******************************************************************************
   */
-#include "../../ifs.h"
+#include "ifs.h"
 
 #if INC_USING_IFS_GPIO
 #include "stm32f7xx.h"
@@ -21,8 +21,6 @@
  */
 ifs_err_t gpio_init(uint8_t idx)
 {
-    assert_param(IS_GPIO_OVERSTEP(idx));
-
     SET_BIT(RCC->AHB1ENR, 1 << (RCC_AHB1ENR_GPIOAEN_Pos + idx));
     return IFS_NO_ERR;
 }
@@ -34,8 +32,6 @@ ifs_err_t gpio_init(uint8_t idx)
  */
 ifs_err_t gpio_deinit(uint8_t idx)
 {
-    assert_param(IS_GPIO_OVERSTEP(idx));
-
     CLEAR_BIT(RCC->AHB1ENR, 1 << (RCC_AHB1ENR_GPIOAEN_Pos + idx));
     return IFS_NO_ERR;
 }
