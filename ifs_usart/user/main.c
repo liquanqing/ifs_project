@@ -40,6 +40,7 @@
 #include "main.h"
 #include "drv_led.h"
 #include "list.h"
+#include "queue.h"
 /** @addtogroup STM32F7xx_HAL_Examples
   * @{
   */

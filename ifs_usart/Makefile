@@ -44,6 +44,7 @@ include arch/$(CPU_DIR)/Makefile.config
 
 
 OBJS += arch/ifs.o
+OBJS += common/queue.o
 OBJS += component/drv_led.o
 
 CFLAGS += -g -O3 -std=gnu99 -Warray-bounds -nostartfiles -fdata-sections -ffunction-sections 
