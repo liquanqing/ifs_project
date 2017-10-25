@@ -11,6 +11,7 @@
   ******************************************************************************
   */
 #include "../../ifs.h"
+#include "usart.h"
 
 #if INC_USING_IFS_USART
 #include "stm32f7xx.h"
@@ -19,6 +20,14 @@
 #define PCLK2_CLK       108000000UL
 
 #define USART_PORT_NUM  8
+
+#ifndef NULL
+#define NULL    (void *)0
+#endif
+
+static rx_cb usart_onrx[USART_PORT_NUM];
+static tx_cb usart_ontx[USART_PORT_NUM];
+static void *usart_cb_param[USART_PORT_NUM];
 
 const USART_TypeDef *usart_group[USART_PORT_NUM] = {
     USART1,
@@ -193,6 +202,25 @@ ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode)
     //NVIC_EnableIRQ(usart_irq[id]);
     //NVIC_SetPriority(usart_irq[id], 1);
     usart->CR1 |= 1 << 0; // enable usart
+    return IFS_NO_ERR;
+}
+
+ifs_err_t usart_add_callback(uint8_t idx, void *param, tx_cb tx, rx_cb rx)
+{
+    USART_TypeDef *usart = IFS_NULL;
+    usart = (USART_TypeDef *)usart_group[idx];
+    usart_onrx[idx] = rx;
+    usart_ontx[idx] = tx;
+    usart_cb_param[idx] = param;
+
+    if (tx != NULL) {
+        usart->CR1 |= 1 << 5;
+    }
+
+    if (rx != NULL) {
+        usart->CR1 |= 1 << 5;
+    }
+
     return IFS_NO_ERR;
 }
 
