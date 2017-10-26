@@ -46,7 +46,7 @@ void nvic_channel_config(IRQn_Type IRQn, uint32_t preemption, uint8_t sub)
 {
     uint32_t prioritygroup = 0x00;
     prioritygroup = NVIC_GetPriorityGrouping();
-  
+    NVIC_EnableIRQ(IRQn);
     NVIC_SetPriority(IRQn, NVIC_EncodePriority(prioritygroup, preemption, sub));
 }
 

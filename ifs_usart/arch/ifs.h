@@ -33,12 +33,16 @@ typedef struct _ifs_gpio_t ifs_gpio_t;
 
 
 #if INC_USING_IFS_USART
+typedef void (*tx_cb)(void *);
+typedef void (*rx_cb)(void *, uint16_t dat);
+
 struct _ifs_usart_t {
     ifs_err_t (*init)(uint8_t idx);
     ifs_err_t (*deinit)(uint8_t idx);
     ifs_err_t (*config)(uint8_t idx, uint32_t baudrate, uint32_t mode);
     ifs_err_t (*put)(uint8_t idx, uint16_t data);
     uint16_t (*get)(uint8_t idx);
+    ifs_err_t (*add_callback)(uint8_t idx, uint8_t priproty, void *param, tx_cb tx, rx_cb rx);
     ifs_err_t (*tx_ready)(uint8_t idx);
     ifs_err_t (*rx_ready)(uint8_t idx);
 };

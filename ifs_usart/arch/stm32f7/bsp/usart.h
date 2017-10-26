@@ -44,7 +44,7 @@ typedef void (*rx_cb)(void *, uint16_t dat);
 ifs_err_t usart_init(uint8_t idx);
 ifs_err_t usart_deinit(uint8_t idx);
 ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode);
-ifs_err_t usart_add_callback(uint8_t idx, void *param, tx_cb tx, rx_cb rx);
+ifs_err_t usart_add_callback(uint8_t idx, uint8_t priproty, void *param, tx_cb tx, rx_cb rx);
 ifs_err_t usart_put(uint8_t idx, uint16_t data);
 uint16_t  usart_get(uint8_t idx);
 ifs_err_t usart_tx_ready(uint8_t idx);

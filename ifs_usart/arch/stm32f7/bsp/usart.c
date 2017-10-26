@@ -15,6 +15,7 @@
 
 #if INC_USING_IFS_USART
 #include "stm32f7xx.h"
+#include "sys.h"
 
 #define PCLK1_CLK       54000000UL
 #define PCLK2_CLK       108000000UL
@@ -205,7 +206,7 @@ ifs_err_t usart_config(uint8_t idx, uint32_t baudrate, uint32_t mode)
     return IFS_NO_ERR;
 }
 
-ifs_err_t usart_add_callback(uint8_t idx, void *param, tx_cb tx, rx_cb rx)
+ifs_err_t usart_add_callback(uint8_t idx, uint8_t priproty, void *param, tx_cb tx, rx_cb rx)
 {
     USART_TypeDef *usart = IFS_NULL;
     usart = (USART_TypeDef *)usart_group[idx];
@@ -214,13 +215,14 @@ ifs_err_t usart_add_callback(uint8_t idx, void *param, tx_cb tx, rx_cb rx)
     usart_cb_param[idx] = param;
 
     if (tx != NULL) {
-        usart->CR1 |= 1 << 5;
+        usart->CR1 |= 1 << 6;
     }
 
     if (rx != NULL) {
         usart->CR1 |= 1 << 5;
     }
-
+    if ((tx != NULL) || (rx != NULL))
+        nvic_channel_config(usart_irq[idx], priproty, 0);
     return IFS_NO_ERR;
 }
 
@@ -275,7 +277,13 @@ ifs_err_t usart_rx_ready(uint8_t idx)
 
 void USART1_IRQHandler(void)
 {
-    if (USART1->ISR & (1ul << 5)) {
+    if ((USART1->ISR & (1ul << 5)) && (usart_onrx[0] != NULL)) {
+        usart_onrx[0](usart_cb_param[0], USART1->RDR);
+    }
+
+    if ((USART1->ISR & (1ul << 6)) && (usart_ontx[0] != NULL)) {
+        USART1->ISR &= ~(1 << 6);
+        usart_ontx[0](usart_cb_param[0]);
     }
 }
 

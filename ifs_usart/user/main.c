@@ -61,6 +61,13 @@ static void Error_Handler(void);
 
 /* Private functions ---------------------------------------------------------*/
 
+void usart_callback_rx(void *param, uint16_t data)
+{
+    ifs.usart.put(IFS_USART1, data);
+    led_toggle(LED_USER1);
+    led_toggle(LED_USER2);
+}
+
 /**
   * @brief  Main program
   * @param  None
@@ -101,15 +108,17 @@ int main(void)
     ifs.gpio.config_pin(IFS_GPIOA, 10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);                
     ifs.usart.init(IFS_USART1);
     ifs.usart.config(IFS_USART1, 115200, IFS_USART_8N1);
+    ifs.usart.add_callback(IFS_USART1, 2, NULL, NULL, usart_callback_rx);
     /* Infinite loop */
     while (1)
     {
+        #if 0
         if (IFS_READY == ifs.usart.rx_ready(IFS_USART1)) {
-            
             ifs.usart.put(IFS_USART1, ifs.usart.get(IFS_USART1));
             led_toggle(LED_USER1);
             led_toggle(LED_USER2);
         }
+        #endif
     }
 }
 
