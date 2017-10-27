@@ -282,37 +282,93 @@ void USART1_IRQHandler(void)
     }
 
     if ((USART1->ISR & (1ul << 6)) && (usart_ontx[0] != NULL)) {
-        USART1->ISR &= ~(1 << 6);
+        USART1->ICR |= (1 << 6);
         usart_ontx[0](usart_cb_param[0]);
     }
 }
 
 void USART2_IRQHandler(void)
 {
+    if ((USART2->ISR & (1ul << 5)) && (usart_onrx[1] != NULL)) {
+        usart_onrx[1](usart_cb_param[1], USART2->RDR);
+    }
+
+    if ((USART2->ISR & (1ul << 6)) && (usart_ontx[1] != NULL)) {
+        USART2->ICR |= (1 << 6);
+        usart_ontx[1](usart_cb_param[1]);
+    }
 }
 
 void USART3_IRQHandler(void)
 {
+    if ((USART3->ISR & (1ul << 5)) && (usart_onrx[2] != NULL)) {
+        usart_onrx[2](usart_cb_param[2], USART3->RDR);
+    }
+
+    if ((USART3->ISR & (1ul << 6)) && (usart_ontx[2] != NULL)) {
+        USART3->ICR |= (1 << 6);
+        usart_ontx[2](usart_cb_param[2]);
+    }
 }
 
 void UART4_IRQHandler(void)
 {
+    if ((UART4->ISR & (1ul << 5)) && (usart_onrx[3] != NULL)) {
+        usart_onrx[3](usart_cb_param[3], UART4->RDR);
+    }
+
+    if ((UART4->ISR & (1ul << 6)) && (usart_ontx[3] != NULL)) {
+        UART4->ICR |= (1 << 6);
+        usart_ontx[3](usart_cb_param[3]);
+    }
 }
 
 void UART5_IRQHandler(void)
 {
+    if ((UART5->ISR & (1ul << 5)) && (usart_onrx[4] != NULL)) {
+        usart_onrx[4](usart_cb_param[4], UART5->RDR);
+    }
+
+    if ((UART5->ISR & (1ul << 6)) && (usart_ontx[4] != NULL)) {
+        UART5->ICR |= (1 << 6);
+        usart_ontx[4](usart_cb_param[4]);
+    }
 }
 
 void USART6_IRQHandler(void)
 {
+    if ((USART6->ISR & (1ul << 5)) && (usart_onrx[5] != NULL)) {
+        usart_onrx[5](usart_cb_param[5], USART6->RDR);
+    }
+
+    if ((USART6->ISR & (1ul << 6)) && (usart_ontx[5] != NULL)) {
+        USART6->ICR |= (1 << 6);
+        usart_ontx[5](usart_cb_param[5]);
+    }
 }
 
 void UART7_IRQHandler(void)
 {
+    if ((UART7->ISR & (1ul << 5)) && (usart_onrx[6] != NULL)) {
+        usart_onrx[6](usart_cb_param[6], UART7->RDR);
+    }
+
+    if ((UART7->ISR & (1ul << 6)) && (usart_ontx[6] != NULL)) {
+        UART7->ICR |= (1 << 6);
+        usart_ontx[6](usart_cb_param[6]);
+    }
 }
 
 void UART8_IRQHandler(void)
 {
+    if ((UART8->ISR & (1ul << 5)) && (usart_onrx[7] != NULL)) {
+        usart_onrx[7](usart_cb_param[7], UART8->RDR);
+    }
+
+    if ((UART8->ISR & (1ul << 6)) && (usart_ontx[7] != NULL)) {
+        UART8->ICR |= (1 << 6);
+        usart_ontx[7](usart_cb_param[7]);
+    }
 }
 
 #endif

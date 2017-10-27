@@ -111,7 +111,7 @@ ifs_err_t gpio_in(uint8_t idx, uint32_t pin_mask, uint32_t *value)
     //GPIO_TypeDef *gpio;
     
     //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    *value = ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR;
+    *value = (((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR & pin_mask);
     
     return IFS_NO_ERR;
 }
@@ -121,7 +121,7 @@ uint32_t gpio_get(uint8_t idx, uint32_t pin_mask)
     //GPIO_TypeDef *gpio;
     
     //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    return ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR;
+    return (((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->IDR & pin_mask);
 }
 
 
