@@ -35,7 +35,7 @@ const ifs_info_t ifs = {
         .put        = usart_put,
         .get        = usart_get,
         .add_callback = usart_add_callback,
-        .tx_ready   = usart_rx_ready,
+        .tx_ready   = usart_tx_ready,
         .rx_ready   = usart_rx_ready,
     },
 #endif

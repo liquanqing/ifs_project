@@ -255,6 +255,7 @@ ifs_err_t usart_tx_ready(uint8_t idx)
     usart = (USART_TypeDef *)usart_group[idx];
     
     if (usart->ISR & (1 << 7)) {
+        usart->ICR |= (1 << 7);
         return IFS_READY;
     } else {
         return IFS_NOT_READY;

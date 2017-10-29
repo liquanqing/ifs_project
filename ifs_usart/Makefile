@@ -46,6 +46,7 @@ include arch/$(CPU_DIR)/Makefile.config
 OBJS += arch/ifs.o
 OBJS += common/queue.o
 OBJS += component/drv_led.o
+OBJS += component/printf.o
 
 CFLAGS += -g -O3 -std=gnu99 -Warray-bounds -nostartfiles -fdata-sections -ffunction-sections 
 CFLAGS += -mcpu=$(CPU) -fsingle-precision-constant -Wdouble-promotion -mtune=$(CPU) -mthumb -Wall -mfpu=$(FPU) -mfloat-abi=hard 

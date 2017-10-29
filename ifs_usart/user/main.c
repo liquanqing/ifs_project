@@ -41,6 +41,8 @@
 #include "drv_led.h"
 #include "list.h"
 #include "queue.h"
+#include "printf.h"
+
 /** @addtogroup STM32F7xx_HAL_Examples
   * @{
   */
@@ -63,7 +65,6 @@ static void Error_Handler(void);
 
 void usart_callback_rx(void *param, uint16_t data)
 {
-    ifs.usart.put(IFS_USART1, data);
     led_toggle(LED_USER1);
 }
 
@@ -112,20 +113,24 @@ int main(void)
     /* Add your application code here */
     hw_led_init();
     ifs.gpio.init(IFS_GPIOA);
-    ifs.gpio.config_pin(IFS_GPIOA, 0, IFS_GPIO_IN_DOWN);
-    ifs.gpio.config_pin(IFS_GPIOA, 9, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
-    ifs.gpio.config_pin(IFS_GPIOA, 10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);                
+    ifs.gpio.config_pin(IFS_GPIOA, IFS_PIN_0, IFS_GPIO_IN_DOWN);
+    ifs.gpio.config_pin(IFS_GPIOA, IFS_PIN_9 | IFS_PIN_10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
     ifs.usart.init(IFS_USART1);
     ifs.usart.config(IFS_USART1, 115200, IFS_USART_8N1);
-    ifs.usart.add_callback(IFS_USART1, 2, NULL, usart_callback_tx, usart_callback_rx);
+    ifs.usart.add_callback(IFS_USART1, 2, NULL, NULL, usart_callback_rx);
+    print("start usart demo\r\n");
+    print("test print...\r\n");
+    print("%d %d %x %x %d %c %s\r\n"
+          ,sizeof(long long), sizeof(double), 0x32, 100, 100, 'c', "world");
     /* Infinite loop */
     while (1)
     {
-        if (ifs.gpio.get(IFS_GPIOA, 1 << 0)) {
+        if (ifs.gpio.get(IFS_GPIOA, IFS_BIT(0))) {
             delay();
-            if (ifs.gpio.get(IFS_GPIOA, 1 << 0)) {
+            if (ifs.gpio.get(IFS_GPIOA, IFS_BIT(0))) {
                 led_toggle(LED_USER1); 
                 ifs.usart.put(IFS_USART1, 'a');
+                while (!ifs.gpio.get(IFS_GPIOA, IFS_BIT(0)));
             }
         }
 

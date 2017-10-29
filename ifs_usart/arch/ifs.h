@@ -21,7 +21,7 @@
 struct _ifs_gpio_t {
     ifs_err_t (*init)(uint8_t idx);
     ifs_err_t (*deinit)(uint8_t idx);
-    ifs_err_t (*config_pin)(uint8_t idx, uint8_t pin_idx, uint32_t mode);
+    ifs_err_t (*config_pin)(uint8_t idx, uint32_t pin_idx, uint32_t mode);
     ifs_err_t (*set)(uint8_t idx, uint32_t pin_idx);
     ifs_err_t (*clear)(uint8_t idx, uint32_t pin_idx);
     ifs_err_t (*toggle)(uint8_t idx, uint32_t pin_idx);
@@ -64,6 +64,7 @@ typedef struct _ifs_info_t ifs_info_t;
 #endif
 
 /* Bit Control */
+#define IFS_BIT(BIT)              (1 << (BIT))
 #define IFS_SET_BIT(REG, BIT)     ((REG) |= (1ul << BIT))
 #define IFS_CLEAR_BIT(REG, BIT)   ((REG) &= ~(1ul << BIT))
 #define IFS_READ_BIT(REG, BIT)    ((REG) & (1ul << BIT))

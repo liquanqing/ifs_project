@@ -86,11 +86,26 @@ enum _GPIO {
 #define IFS_GPIO_AF_AF14                (0x0000000Eul << 7)
 #define IFS_GPIO_AF_AF15                (0x0000000Ful << 7)
 
-
+#define IFS_PIN_0                       (0x0001ul << 0)
+#define IFS_PIN_1                       (0x0001ul << 1)
+#define IFS_PIN_2                       (0x0001ul << 2)
+#define IFS_PIN_3                       (0x0001ul << 3)
+#define IFS_PIN_4                       (0x0001ul << 4)
+#define IFS_PIN_5                       (0x0001ul << 5)
+#define IFS_PIN_6                       (0x0001ul << 6)
+#define IFS_PIN_7                       (0x0001ul << 7)
+#define IFS_PIN_8                       (0x0001ul << 8)
+#define IFS_PIN_9                       (0x0001ul << 9)
+#define IFS_PIN_10                      (0x0001ul << 10)
+#define IFS_PIN_11                      (0x0001ul << 11)
+#define IFS_PIN_12                      (0x0001ul << 12)
+#define IFS_PIN_13                      (0x0001ul << 13)
+#define IFS_PIN_14                      (0x0001ul << 14)
+#define IFS_PIN_15                      (0x0001ul << 15)
 
 ifs_err_t gpio_init(uint8_t idx);
 ifs_err_t gpio_deinit(uint8_t idx);
-ifs_err_t gpio_config_pin(uint8_t idx, uint8_t pin_idx, uint32_t mode); 
+ifs_err_t gpio_config_pin(uint8_t idx, uint32_t pin_idx, uint32_t mode); 
 ifs_err_t gpio_set(uint8_t idx, uint32_t pin_idx);
 ifs_err_t gpio_clear(uint8_t idx, uint32_t pin_idx);
 ifs_err_t gpio_toggle(uint8_t idx, uint32_t pin_idx);

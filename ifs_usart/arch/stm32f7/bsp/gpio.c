@@ -43,7 +43,7 @@ ifs_err_t gpio_deinit(uint8_t idx)
  * !param mode configure_option
  * !retval err code
  */
-ifs_err_t gpio_config_pin(uint8_t idx, uint8_t pin_idx, uint32_t mode)
+void _gpio_config_pin(uint8_t idx, uint32_t pin_idx, uint32_t mode)
 {
     GPIO_TypeDef *gpio;
     uint32_t tmpmode = mode & 0x03;
@@ -62,6 +62,16 @@ ifs_err_t gpio_config_pin(uint8_t idx, uint8_t pin_idx, uint32_t mode)
         gpio->AFR[pin_idx >> 3] &= ~(0x0F << ((pin_idx & 0x07) << 2));
         gpio->AFR[pin_idx >> 3] |= (tmpafio << ((pin_idx & 0x07) << 2));
     }
+}
+
+ifs_err_t gpio_config_pin(uint8_t idx, uint32_t pin_idx, uint32_t mode)
+{
+    for (int i = 0; i < 16; i++) {
+        if (pin_idx & (1 << i)) {
+            _gpio_config_pin(idx, i, mode);
+        }
+    }    
+
     return IFS_NO_ERR;
 }
 
@@ -71,7 +81,7 @@ ifs_err_t gpio_set(uint8_t idx, uint32_t pin_idx)
     
     //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
     //gpio->BSRR |= (1 << pin_idx);
-    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= (1 << pin_idx);
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= pin_idx;
     return IFS_NO_ERR;
 }
 
@@ -81,7 +91,7 @@ ifs_err_t gpio_clear(uint8_t idx, uint32_t pin_idx)
     //uint32_t tmppin = pin_idx + 16;
     
     //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= (1 << (pin_idx + 16));
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->BSRR |= (pin_idx << 16);
     
     return IFS_NO_ERR;
 }
@@ -91,7 +101,7 @@ ifs_err_t gpio_toggle(uint8_t idx, uint32_t pin_idx)
     //GPIO_TypeDef *gpio;
     
     //gpio = (GPIO_TypeDef *)(GPIOA_BASE + (idx << 10));
-    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->ODR ^= (1 << pin_idx);
+    ((GPIO_TypeDef *)(GPIOA_BASE + (idx << 10)))->ODR ^= pin_idx;
     
     return IFS_NO_ERR;
 }

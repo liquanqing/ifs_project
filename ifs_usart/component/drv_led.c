@@ -27,10 +27,10 @@
  * !brief user define
  */
 #define LED_USER1_PORT  IFS_GPIOJ
-#define LED_USER1_PIN   5
+#define LED_USER1_PIN   IFS_PIN_5
 
 #define LED_USER2_PORT  IFS_GPIOJ
-#define LED_USER2_PIN   13
+#define LED_USER2_PIN   IFS_PIN_13
 
 /*
  * !brief All LED Init
