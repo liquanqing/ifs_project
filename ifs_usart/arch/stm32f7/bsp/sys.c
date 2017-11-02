@@ -86,7 +86,7 @@ void cache_enable(void)
 //Fsys=Fvco/pllp=Fs*(plln/(pllm*pllp));
 //Fusb=Fvco/pllq=Fs*(plln/(pllm*pllq));
 //
-#define PLLN  432
+#define PLLN  400
 #define PLLM  25
 #define PLLP  2
 #define PLLQ  9

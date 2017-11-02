@@ -53,6 +53,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define SDRAM_DEVICE_ADDR  ((uint32_t)0xC0000000)
+#define SDRAM_DEVICE_SIZE  ((uint32_t)0x1000000)  /* SDRAM device size in MBytes */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -77,6 +79,20 @@ static void delay(void)
 {
     for (volatile int i = 0; i < 10000; i++);
 }
+
+void sdram_test(void)
+{
+    for (int i = 0; i < 100; i++) {
+        *((uint32_t *)SDRAM_DEVICE_ADDR + (4 * i)) = i;
+        print("write %d in addr 0x%x\r\n", i, SDRAM_DEVICE_ADDR + (i * 4));
+    }
+
+    for (int i = 0; i < 100; i++) {
+        print("read %d in addr 0x%x\r\n", *((uint32_t *)SDRAM_DEVICE_ADDR + (4 * i)), SDRAM_DEVICE_ADDR + (4 * i));
+    }
+}
+
+
 /**
   * @brief  Main program
   * @param  None
@@ -84,6 +100,7 @@ static void delay(void)
   */
 int main(void)
 {
+    uint32_t test_reg = 0;
     /* This project template calls firstly two functions in order to configure MPU feature 
      and to enable the CPU Cache, respectively MPU_Config() and CPU_CACHE_Enable().
      These functions are provided as template implementation that User may integrate 
@@ -122,6 +139,10 @@ int main(void)
     print("test print...\r\n");
     print("%d %d %x %x %d %c %s\r\n"
           ,sizeof(long long), sizeof(double), 0x32, 100, 100, 'c', "world");
+    print("test sdram...\r\n");
+    sdram_init();
+    sdram_test();
+    
     /* Infinite loop */
     while (1)
     {

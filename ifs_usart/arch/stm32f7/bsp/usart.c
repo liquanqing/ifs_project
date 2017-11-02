@@ -17,8 +17,8 @@
 #include "stm32f7xx.h"
 #include "sys.h"
 
-#define PCLK1_CLK       54000000UL
-#define PCLK2_CLK       108000000UL
+#define PCLK1_CLK       50000000UL
+#define PCLK2_CLK       100000000UL
 
 #define USART_PORT_NUM  8
 

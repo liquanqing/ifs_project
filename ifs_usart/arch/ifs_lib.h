@@ -28,6 +28,8 @@
 #include "./stm32f7/bsp/usart.h"
 #endif
 
+#include "./stm32f7/bsp/sdram.h"
+
 #endif
 
 #if INC_USING_IFS

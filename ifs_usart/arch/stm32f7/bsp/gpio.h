@@ -67,7 +67,7 @@ enum _GPIO {
 #define IFS_GPIO_ALTERNATE              (IFS_GPIO_MODE_ALTERNATE  \
                                          | IFS_GPIO_SPEED_HIGH \
                                          | IFS_GPIO_OTYPE_PP   \
-                                         | IFS_GPIO_PUPD_NOPUPD)
+                                         | IFS_GPIO_PUPD_UP)
 
 #define IFS_GPIO_AF_AF0                 (0x00000000ul << 7)
 #define IFS_GPIO_AF_AF1                 (0x00000001ul << 7)
