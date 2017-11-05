@@ -45,6 +45,7 @@ include arch/$(CPU_DIR)/Makefile.config
 
 OBJS += arch/ifs.o
 OBJS += common/queue.o
+OBJS += component/sys_tick.o
 OBJS += component/drv_led.o
 OBJS += component/printf.o
 

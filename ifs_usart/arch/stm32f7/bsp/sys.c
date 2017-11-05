@@ -120,3 +120,17 @@ void sys_clock_config(void)
 		while((RCC->CFGR&(3<<2))!=(2<<2));
 	} 
 }
+
+
+/*
+ * brief open systick periph and interrupt 
+ * !param ticks count of tick 
+ * !retval none
+ */
+void sys_tick_init(uint32_t ticks)
+{
+    uint32_t prioritygroup = 0x00;
+    SysTick_Config(ticks);
+    prioritygroup = NVIC_GetPriorityGrouping();
+    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(prioritygroup, 0x0FUL, 0));
+}

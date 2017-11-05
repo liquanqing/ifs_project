@@ -39,6 +39,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "sys_tick.h"
+#include "drv_led.h"
 #include "stm32f7xx_it.h"
    
 /** @addtogroup STM32F7xx_HAL_Examples
@@ -156,7 +158,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  //HAL_IncTick();
+    sys.handler();
 }
 
 /******************************************************************************/

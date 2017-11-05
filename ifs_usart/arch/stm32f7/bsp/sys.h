@@ -27,4 +27,5 @@ void extern_interrupt_config(uint8_t gpiox, uint8_t pin, uint8_t trim);
 void sys_soft_reset(void);
 void cache_enable(void);
 void sys_clock_config(void);
+void sys_tick_init(uint32_t ticks);
 #endif

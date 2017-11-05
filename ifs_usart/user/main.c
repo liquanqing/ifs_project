@@ -38,6 +38,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "ifs_lib.h"
 #include "main.h"
+#include "sys_tick.h"
 #include "drv_led.h"
 #include "list.h"
 #include "queue.h"
@@ -100,6 +101,7 @@ void sdram_test(void)
   */
 int main(void)
 {
+    uint32_t ticks = 0;
     uint32_t test_reg = 0;
     /* This project template calls firstly two functions in order to configure MPU feature 
      and to enable the CPU Cache, respectively MPU_Config() and CPU_CACHE_Enable().
@@ -142,10 +144,14 @@ int main(void)
     print("test sdram...\r\n");
     sdram_init();
     sdram_test();
-    
+    sys.initialize();
+    sys.set(&ticks);
     /* Infinite loop */
     while (1)
     {
+        if (!sys.check(&ticks, 1000)) {
+            led_toggle(LED_USER2);
+        }
         if (gpio_get(IFS_GPIOA, IFS_BIT(0))) {
             delay();
             if (gpio_get(IFS_GPIOA, IFS_BIT(0))) {
