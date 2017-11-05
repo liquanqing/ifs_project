@@ -22,10 +22,12 @@
 typedef int ifs_int_t;
 typedef ifs_int_t ifs_err_t;
 
+#define IFS_ERR             -1
 #define IFS_NO_ERR          0
 #define IFS_IDX_OVERFLOW    1
 #define IFS_READY           2
 #define IFS_NOT_READY       3
+#define IFS_TIMEOUT         4
 #endif
 /******************************End Of File(INC)*********************************/
 
