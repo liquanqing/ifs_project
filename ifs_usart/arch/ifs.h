@@ -48,6 +48,14 @@ struct _ifs_usart_t {
 };
 typedef struct _ifs_usart_t ifs_usart_t;
 #endif
+
+#if INC_USING_IFS_SDRAM
+
+struct _ifs_sdram_t {
+    ifs_err_t (*init)(void);
+    ifs_err_t (*deinit)(void);
+}
+#endif
 #endif
 
 

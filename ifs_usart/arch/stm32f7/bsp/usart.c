@@ -276,8 +276,26 @@ ifs_err_t usart_rx_ready(uint8_t idx)
     }
 }
 
+static void _irq_handler(uint8_t idx)
+{
+    USART_TypeDef *usart = IFS_NULL;
+    
+    usart = (USART_TypeDef *)usart_group[idx];
+    
+    if ((usart->ISR & (1ul << 5)) && (usart_onrx[idx] != NULL)) {
+        usart_onrx[idx](usart_cb_param[idx], usart->RDR);
+    }
+
+    if ((usart->ISR & (1ul << 6)) && (usart_ontx[idx] != NULL)) {
+        usart->ICR |= (1 << 6);
+        usart_ontx[idx](usart_cb_param[idx]);
+    }
+}
+
+
 void USART1_IRQHandler(void)
 {
+    #if 0
     if ((USART1->ISR & (1ul << 5)) && (usart_onrx[0] != NULL)) {
         usart_onrx[0](usart_cb_param[0], USART1->RDR);
     }
@@ -286,10 +304,14 @@ void USART1_IRQHandler(void)
         USART1->ICR |= (1 << 6);
         usart_ontx[0](usart_cb_param[0]);
     }
+    #else
+    _irq_handler(0);
+    #endif
 }
 
 void USART2_IRQHandler(void)
 {
+    #if 0
     if ((USART2->ISR & (1ul << 5)) && (usart_onrx[1] != NULL)) {
         usart_onrx[1](usart_cb_param[1], USART2->RDR);
     }
@@ -298,10 +320,14 @@ void USART2_IRQHandler(void)
         USART2->ICR |= (1 << 6);
         usart_ontx[1](usart_cb_param[1]);
     }
+    #else
+    _irq_handler(1);
+    #endif
 }
 
 void USART3_IRQHandler(void)
 {
+    #if 0
     if ((USART3->ISR & (1ul << 5)) && (usart_onrx[2] != NULL)) {
         usart_onrx[2](usart_cb_param[2], USART3->RDR);
     }
@@ -310,10 +336,14 @@ void USART3_IRQHandler(void)
         USART3->ICR |= (1 << 6);
         usart_ontx[2](usart_cb_param[2]);
     }
+    #else
+    _irq_handler(2);
+    #endif
 }
 
 void UART4_IRQHandler(void)
 {
+    #if 0
     if ((UART4->ISR & (1ul << 5)) && (usart_onrx[3] != NULL)) {
         usart_onrx[3](usart_cb_param[3], UART4->RDR);
     }
@@ -322,10 +352,14 @@ void UART4_IRQHandler(void)
         UART4->ICR |= (1 << 6);
         usart_ontx[3](usart_cb_param[3]);
     }
+    #else
+    _irq_handler(3);
+    #endif
 }
 
 void UART5_IRQHandler(void)
 {
+    #if 0
     if ((UART5->ISR & (1ul << 5)) && (usart_onrx[4] != NULL)) {
         usart_onrx[4](usart_cb_param[4], UART5->RDR);
     }
@@ -334,10 +368,14 @@ void UART5_IRQHandler(void)
         UART5->ICR |= (1 << 6);
         usart_ontx[4](usart_cb_param[4]);
     }
+    #else
+    _irq_handler(4);
+    #endif
 }
 
 void USART6_IRQHandler(void)
 {
+    #if 0
     if ((USART6->ISR & (1ul << 5)) && (usart_onrx[5] != NULL)) {
         usart_onrx[5](usart_cb_param[5], USART6->RDR);
     }
@@ -346,10 +384,14 @@ void USART6_IRQHandler(void)
         USART6->ICR |= (1 << 6);
         usart_ontx[5](usart_cb_param[5]);
     }
+    #else
+    _irq_handler(5);
+    #endif
 }
 
 void UART7_IRQHandler(void)
 {
+    #if 0
     if ((UART7->ISR & (1ul << 5)) && (usart_onrx[6] != NULL)) {
         usart_onrx[6](usart_cb_param[6], UART7->RDR);
     }
@@ -358,10 +400,14 @@ void UART7_IRQHandler(void)
         UART7->ICR |= (1 << 6);
         usart_ontx[6](usart_cb_param[6]);
     }
+    #else
+    _irq_handler(6);
+    #endif
 }
 
 void UART8_IRQHandler(void)
 {
+    #if 0
     if ((UART8->ISR & (1ul << 5)) && (usart_onrx[7] != NULL)) {
         usart_onrx[7](usart_cb_param[7], UART8->RDR);
     }
@@ -370,6 +416,9 @@ void UART8_IRQHandler(void)
         UART8->ICR |= (1 << 6);
         usart_ontx[7](usart_cb_param[7]);
     }
+    #else
+    _irq_handler(7);
+    #endif
 }
 
 #endif
