@@ -129,12 +129,12 @@ int main(void)
 
     /* Add your application code here */
     hw_led_init();
-    ifs.gpio.init(IFS_GPIOA);
-    ifs.gpio.config_pin(IFS_GPIOA, IFS_PIN_0, IFS_GPIO_IN_DOWN);
-    ifs.gpio.config_pin(IFS_GPIOA, IFS_PIN_9 | IFS_PIN_10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
-    ifs.usart.init(IFS_USART1);
-    ifs.usart.config(IFS_USART1, 115200, IFS_USART_8N1);
-    ifs.usart.add_callback(IFS_USART1, 2, NULL, NULL, usart_callback_rx);
+    gpio_init(IFS_GPIOA);
+    gpio_config_pin(IFS_GPIOA, IFS_PIN_0, IFS_GPIO_IN_DOWN);
+    gpio_config_pin(IFS_GPIOA, IFS_PIN_9 | IFS_PIN_10, IFS_GPIO_ALTERNATE | IFS_GPIO_AF_AF7);
+    usart_init(IFS_USART1);
+    usart_config(IFS_USART1, 115200, IFS_USART_8N1);
+    usart_add_callback(IFS_USART1, 2, NULL, NULL, usart_callback_rx);
     print("start usart demo\r\n");
     print("test print...\r\n");
     print("%d %d %x %x %d %c %s\r\n"
@@ -146,12 +146,12 @@ int main(void)
     /* Infinite loop */
     while (1)
     {
-        if (ifs.gpio.get(IFS_GPIOA, IFS_BIT(0))) {
+        if (gpio_get(IFS_GPIOA, IFS_BIT(0))) {
             delay();
-            if (ifs.gpio.get(IFS_GPIOA, IFS_BIT(0))) {
+            if (gpio_get(IFS_GPIOA, IFS_BIT(0))) {
                 led_toggle(LED_USER1); 
-                ifs.usart.put(IFS_USART1, 'a');
-                while (!ifs.gpio.get(IFS_GPIOA, IFS_BIT(0)));
+                usart_put(IFS_USART1, 'a');
+                while (!gpio_get(IFS_GPIOA, IFS_BIT(0)));
             }
         }
 
